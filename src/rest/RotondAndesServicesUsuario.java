@@ -38,7 +38,7 @@ import vos.VOVerificacionCliente;
  * @author Monitores 2017-20
  */
 @Path("usuarios")
-public class RotondAndesServices {
+public class RotondAndesServicesUsuario {
 
 	/**
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
