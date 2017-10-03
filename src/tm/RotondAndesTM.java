@@ -60,7 +60,7 @@ public class RotondAndesTM {
 	 * Atributo que guarda el driver que se va a usar para conectarse a la base de datos.
 	 */
 	private String driver;
-	
+
 	/**
 	 * conexion a la base de datos
 	 */
@@ -110,9 +110,9 @@ public class RotondAndesTM {
 		return DriverManager.getConnection(url, user, password);
 	}
 
-	////////////////////////////////////////
-	///////Transacciones////////////////////
-	////////////////////////////////////////
+	/////////////////////////////////////////////////
+	///////Transacciones USUARIOS////////////////////
+	/////////////////////////////////////////////////
 
 
 	/**
@@ -189,7 +189,7 @@ public class RotondAndesTM {
 		}
 		return videos;
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que busca el video en la base de datos con el id que entra como parametro.
 	 * @param name - Id del video a buscar. name != null
@@ -227,7 +227,7 @@ public class RotondAndesTM {
 		}
 		return video;
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que agrega un solo video a la base de datos.
 	 * <b> post: </b> se ha agregado el video que entra como parametro
@@ -264,7 +264,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que agrega los videos que entran como parametro a la base de datos.
 	 * <b> post: </b> se han agregado los videos que entran como parametro
@@ -284,7 +284,7 @@ public class RotondAndesTM {
 			{
 				daoRotond.addUsuario(it.next());
 			}
-			
+
 			conn.commit();
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -308,7 +308,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que actualiza el video que entra como parametro a la base de datos.
 	 * <b> post: </b> se ha actualizado el video que entra como parametro
@@ -380,5 +380,14 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	///////Transacciones PRODUCTOS///////////////////
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	
+	
 
 }
