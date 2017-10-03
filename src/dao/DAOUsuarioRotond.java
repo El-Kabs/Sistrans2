@@ -170,7 +170,7 @@ public class DAOUsuarioRotond {
 		sql += "'"+usuario.getRol() + "',";
 		sql += "'"+usuario.getPassword() + ")";
 		
-		String sql2 = "INSERT INTO USUARIOS VALUES ("+usuario.getId()+", '"+usuario.getNombre()+"', '"+usuario.getEmail()+"', '"+usuario.getRol()+"', '"+usuario.getPassword()+"')";
+		String sql2 = "INSERT INTO USUARIOS VALUES ("+usuario.getId()+", '"+usuario.getEmail()+"', '"+usuario.getNombre()+"', '"+usuario.getRol()+"', '"+usuario.getPassword()+"')";
 //		INSERT INTO USUARIOS VALUES(1, 'Kobs', 'kobs@kobs.com', 'admin', 'kabska83');
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
