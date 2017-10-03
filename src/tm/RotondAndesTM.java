@@ -20,7 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import dao.DAORestauranteRotond;
 import dao.DAOUsuarioRotond;
+import vos.Restaurante;
 import vos.Usuario;
 
 /**
@@ -388,6 +390,228 @@ public class RotondAndesTM {
 	/////////////////////////////////////////////////
 	/////////////////////////////////////////////////
 	
+	/**
+	 * Metodo que modela la transaccion que retorna todos los videos de la base de datos.
+	 * @return ListaVideos - objeto que modela  un arreglo de videos. este arreglo contiene el resultado de la busqueda
+	 * @throws Exception -  cualquier error que se genere durante la transaccion
+	 */
+	public List<Restaurante> darRestaurantes() throws Exception {
+		List<Restaurante> restaurantes;
+		DAORestauranteRotond daoRotond = new DAORestauranteRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			restaurantes = daoRotond.darRestaurante();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return restaurantes;
+	}
+	/**
+	 * Metodo que modela la transaccion que busca el/los videos en la base de datos con el nombre entra como parametro.
+	 * @param name - Nombre del video a buscar. name != null
+	 * @return ListaVideos - objeto que modela  un arreglo de videos. este arreglo contiene el resultado de la busqueda
+	 * @throws Exception -  cualquier error que se genere durante la transaccion
+	 */
+	public List<Restaurante> buscarRestaurantePorNombre(String name) throws Exception {
+		List<Restaurante> restaurantes;
+		DAORestauranteRotond daoRotond = new DAORestauranteRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			restaurantes = daoRotond.buscarRestaurantesPorName(name);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return restaurantes;
+	}
+	/**
+	 * Metodo que modela la transaccion que agrega un solo video a la base de datos.
+	 * <b> post: </b> se ha agregado el video que entra como parametro
+	 * @param usuario - el video a agregar. video != null
+	 * @throws Exception - cualquier error que se genere agregando el video
+	 */
+	public void addRestaurante(Restaurante restaurante) throws Exception {
+		DAORestauranteRotond daoRotond = new DAORestauranteRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			daoRotond.addRestaurante(restaurante);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	/**
+	 * Metodo que modela la transaccion que agrega los videos que entran como parametro a la base de datos.
+	 * <b> post: </b> se han agregado los videos que entran como parametro
+	 * @param usuarios - objeto que modela una lista de videos y se estos se pretenden agregar. videos != null
+	 * @throws Exception - cualquier error que se genera agregando los videos
+	 */
+	public void addRestaurantes(List<Restaurante> restaurantes) throws Exception {
+		DAORestauranteRotond daoRotond = new DAORestauranteRotond();
+		try 
+		{
+			//////transaccion - ACID Example
+			this.conn = darConexion();
+			conn.setAutoCommit(false);
+			daoRotond.setConn(conn);
+			Iterator<Restaurante> it = restaurantes.iterator();
+			while(it.hasNext())
+			{
+				daoRotond.addRestaurante(it.next());
+			}
+
+			conn.commit();
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			conn.rollback();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	/**
+	 * Metodo que modela la transaccion que elimina el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha eliminado el video que entra como parametro
+	 * @param usuario - Video a eliminar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+	public void deleteRestaurante(Restaurante restaurante) throws Exception {
+		DAORestauranteRotond daoVideos = new DAORestauranteRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoVideos.setConn(conn);
+			daoVideos.deleteRestaurante(restaurante);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoVideos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	/**
+	 * Metodo que modela la transaccion que actualiza el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha actualizado el video que entra como parametro
+	 * @param usuario - Video a actualizar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+	public void updateRestaurante(Restaurante restaurante) throws Exception {
+		DAORestauranteRotond daoRotond = new DAORestauranteRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			daoRotond.updateRestaurante(restaurante);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 	
 
 }
