@@ -23,7 +23,7 @@ import vos.*;
  * Clase DAO que se conecta la base de datos usando JDBC para resolver los requerimientos de la aplicación
  * @author Monitores 2017-20
  */
-public class DAOTablaRotond {
+public class DAOUsuarioRotond {
 
 
 	/**
@@ -40,7 +40,7 @@ public class DAOTablaRotond {
 	 * Metodo constructor que crea DAOVideo
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
-	public DAOTablaRotond() {
+	public DAOUsuarioRotond() {
 		recursos = new ArrayList<Object>();
 	}
 
@@ -147,7 +147,7 @@ public class DAOTablaRotond {
 			String email = rs.getString("EMAIL");
 			String rol = rs.getString("ROL");
 			String password = rs.getString("PASSWORD");
-			usuario = (new Usuario(id, name, email, rol, password));
+			usuario = (new Usuario(id2, name, email, rol, password));
 		}
 
 		return usuario;
@@ -190,13 +190,6 @@ public class DAOTablaRotond {
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
 	public void updateUsuario(Usuario usuario) throws SQLException, Exception {
-
-		String sql = "UPDATE USUARIOS SET ";
-		sql += "NOMBRE='" + usuario.getNombre() + "',";
-		sql += "ROL='" + usuario.getRol() + "',";
-		sql += "PASSWORD='" + usuario.getPassword() + "',";
-		sql += "EMAIL=" + usuario.getEmail();
-		sql += " WHERE IDENTIFICACION = " + usuario.getId();
 
 		String sql2 = "UPDATE USUARIOS SET NOMBRE = '"+usuario.getNombre()+"', EMAIL='"+usuario.getEmail()+"', ROL='"+usuario.getRol()+"', PASSWORD='"+usuario.getPassword()+"' WHERE IDENTIFICACION="+usuario.getId()
 		;

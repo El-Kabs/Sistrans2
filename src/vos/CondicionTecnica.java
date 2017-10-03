@@ -19,7 +19,4 @@ public class CondicionTecnica {
 	public void setCondicion(String condicion) {
 		this.condicion = condicion;
 	}
-	
-	
-
 }

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import dao.DAOTablaRotond;
+import dao.DAOUsuarioRotond;
 import vos.Usuario;
 
 /**
@@ -122,7 +122,7 @@ public class RotondAndesTM {
 	 */
 	public List<Usuario> darUsuarios() throws Exception {
 		List<Usuario> usuarios;
-		DAOTablaRotond daoRotond = new DAOTablaRotond();
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion
@@ -160,7 +160,7 @@ public class RotondAndesTM {
 	 */
 	public List<Usuario> buscarUsuariosPorName(String name) throws Exception {
 		List<Usuario> videos;
-		DAOTablaRotond daoRotond = new DAOTablaRotond();
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion
@@ -198,7 +198,7 @@ public class RotondAndesTM {
 	 */
 	public Usuario buscarUsuarioPorId(Long id) throws Exception {
 		Usuario video;
-		DAOTablaRotond daoRotond = new DAOTablaRotond();
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion
@@ -235,7 +235,7 @@ public class RotondAndesTM {
 	 * @throws Exception - cualquier error que se genere agregando el video
 	 */
 	public void addUsuario(Usuario usuario) throws Exception {
-		DAOTablaRotond daoRotond = new DAOTablaRotond();
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion
@@ -272,7 +272,7 @@ public class RotondAndesTM {
 	 * @throws Exception - cualquier error que se genera agregando los videos
 	 */
 	public void addUsuarios(List<Usuario> usuarios) throws Exception {
-		DAOTablaRotond daoRotond = new DAOTablaRotond();
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion - ACID Example
@@ -316,7 +316,7 @@ public class RotondAndesTM {
 	 * @throws Exception - cualquier error que se genera actualizando los videos
 	 */
 	public void updateUsuario(Usuario usuario) throws Exception {
-		DAOTablaRotond daoRotond = new DAOTablaRotond();
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion
@@ -352,7 +352,7 @@ public class RotondAndesTM {
 	 * @throws Exception - cualquier error que se genera actualizando los videos
 	 */
 	public void deleteUsuario(Usuario usuario) throws Exception {
-		DAOTablaRotond daoVideos = new DAOTablaRotond();
+		DAOUsuarioRotond daoVideos = new DAOUsuarioRotond();
 		try 
 		{
 			//////transaccion
