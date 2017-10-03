@@ -31,6 +31,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
 import vos.Usuario;
+import vos.VOVerificacion;
 
 /**
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/videos/...
@@ -125,6 +126,37 @@ public class RotondAndesServices {
 		return Response.status(200).entity(usuarios).build();
 	}
 
+	@POST
+	@Path("admin")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addUserByAdmin(VOVerificacion verificacion)
+	{
+		Usuario admin=verificacion.getAdmin();
+		Usuario usu=verificacion.getUsuario();
+		try {
+			RotondAndesTM tm = new RotondAndesTM(getPath());
+			System.out.println("entro al Try");
+			System.out.println(admin.getNombre());
+			System.out.println(usu.getNombre());
+			if(verificarcontraseña(admin)&&admin.getRol().equals("Administrador"))
+			{
+				System.out.println("entro IF");
+				tm.addUsuario(usu);
+				return Response.status(200).entity(usu).build();
+			}
+			System.out.println("no entro");
+			return Response.status(402).entity("no puede registrar este usuario").build();
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		
+	}
+	
 
     /**
      * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
@@ -200,6 +232,28 @@ public class RotondAndesServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(usuario).build();
+	}
+	
+	public boolean verificarcontraseña(Usuario usuario)
+	{
+		boolean correcta=false;
+		try {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Usuario usu= tm.buscarUsuarioPorId(usuario.getId());
+		System.out.println(usu.getPassword()+"   base datos");
+		System.out.println(usuario.getPassword());
+		System.out.println("VERIFICANDO PASS");
+		if(usu.getPassword().equals(usuario.getPassword())) {
+			System.out.println("verificado");
+			correcta=true;
+		}
+		
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return correcta;
 	}
 
 

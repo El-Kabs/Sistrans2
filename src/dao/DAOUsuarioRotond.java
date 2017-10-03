@@ -86,7 +86,7 @@ public class DAOUsuarioRotond {
 
 		while (rs.next()) {
 			String nombre = rs.getString("NOMBRE");
-			Long id = rs.getLong("IDENTIFICACION");
+			Long id = rs.getLong("ID");
 			String email = rs.getString("EMAIL");
 			String rol = rs.getString("ROL");
 			String password = rs.getString("PASSWORD");
@@ -114,7 +114,7 @@ public class DAOUsuarioRotond {
 
 		while (rs.next()) {
 			String name2 = rs.getString("NOMBRE");
-			Long id = rs.getLong("IDENTIFICACION");
+			Long id = rs.getLong("ID");
 			String email = rs.getString("EMAIL");
 			String rol = rs.getString("ROL");
 			String password = rs.getString("PASSWORD");
@@ -135,7 +135,7 @@ public class DAOUsuarioRotond {
 	{
 		Usuario usuario = null;
 
-		String sql = "SELECT * FROM USUARIOS WHERE IDENTIFICACION =" + id;
+		String sql = "SELECT * FROM USUARIOS WHERE ID =" + id;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -143,7 +143,7 @@ public class DAOUsuarioRotond {
 
 		if(rs.next()) {
 			String name = rs.getString("NOMBRE");
-			Long id2 = rs.getLong("IDENTIFICACION");
+			Long id2 = rs.getLong("ID");
 			String email = rs.getString("EMAIL");
 			String rol = rs.getString("ROL");
 			String password = rs.getString("PASSWORD");
@@ -191,7 +191,7 @@ public class DAOUsuarioRotond {
 	 */
 	public void updateUsuario(Usuario usuario) throws SQLException, Exception {
 
-		String sql2 = "UPDATE USUARIOS SET NOMBRE = '"+usuario.getNombre()+"', EMAIL='"+usuario.getEmail()+"', ROL='"+usuario.getRol()+"', PASSWORD='"+usuario.getPassword()+"' WHERE IDENTIFICACION="+usuario.getId()
+		String sql2 = "UPDATE USUARIOS SET NOMBRE = '"+usuario.getNombre()+"', EMAIL='"+usuario.getEmail()+"', ROL='"+usuario.getRol()+"', PASSWORD='"+usuario.getPassword()+"' WHERE ID="+usuario.getId()
 		;
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		recursos.add(prepStmt);
@@ -209,7 +209,7 @@ public class DAOUsuarioRotond {
 	public void deleteUsuario(Usuario usuario) throws SQLException, Exception {
 
 		String sql = "DELETE FROM USUARIOS";
-		sql += " WHERE IDENTIFICACION = " + usuario.getId();
+		sql += " WHERE ID = " + usuario.getId();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

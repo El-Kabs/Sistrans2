@@ -71,7 +71,8 @@ public class DAOPreferenciaRotond {
 			double precioMax = rs.getDouble("PRECIO_MAX");
 			Integer id= rs.getInt("ID_preferencia");
 			String zona = rs.getString("ZONA_Preferencia");
-			Preferencias.add(new Preferencia(id, zona, precioMin, precioMax, categoria));
+			Integer usuario=rs.getInt("ID_USUARIO");
+			Preferencias.add(new Preferencia(id, zona, precioMin, precioMax, categoria,usuario));
 		}
 		return Preferencias;
 	}
@@ -91,7 +92,8 @@ public class DAOPreferenciaRotond {
 			double precioMax = rs.getDouble("PRECIO_MAX");
 			Integer id= rs.getInt("ID_preferencia");
 			String zona = rs.getString("ZONA_Preferencia");
-			Preferencias.add(new Preferencia(id, zona, precioMin, precioMax, categoria));
+			Integer usuario=rs.getInt("ID_USUARIO");
+			Preferencias.add(new Preferencia(id, zona, precioMin, precioMax, categoria,usuario));
 		}
 		return Preferencias;
 	}
@@ -106,7 +108,7 @@ public class DAOPreferenciaRotond {
 	 */
 	public void addPreferencia(Preferencia Preferencia) throws SQLException, Exception {
 		
-		String sql2 = "INSERT INTO PREFERENCIA VALUES ('"+Preferencia.getZona()+"', '"+Preferencia.getPrecioMin()+"', '"+Preferencia.getPrecioMax()+"', '"+Preferencia.getCategoria()+"', '"+Preferencia.getId()+"','"+Preferencia.getId()+"')";
+		String sql2 = "INSERT INTO PREFERENCIA VALUES ('"+Preferencia.getZona()+"', '"+Preferencia.getPrecioMin()+"', '"+Preferencia.getPrecioMax()+"', '"+Preferencia.getCategoria()+"', '"+Preferencia.getUsuario()+"','"+Preferencia.getId()+"')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		System.out.println("SQL 2:"+sql2);
@@ -125,7 +127,7 @@ public class DAOPreferenciaRotond {
 	 */
 	public void updatePreferencia(Preferencia Preferencia) throws SQLException, Exception {
 
-		String sql2 = "UPDATE PREFERENCIA SET ZONA='"+Preferencia.getZona()+"', PRECIO_MIN='"+Preferencia.getPrecioMin()+" PRECIO_MAX = ' "+Preferencia.getPrecioMax()+"' CATEGORIA='"+Preferencia.getCategoria()+"' WHERE NAME='"+Preferencia.getId()+"'"
+		String sql2 = "UPDATE PREFERENCIA SET ZONA='"+Preferencia.getZona()+"', PRECIO_MIN='"+Preferencia.getPrecioMin()+" PRECIO_MAX = ' "+Preferencia.getPrecioMax()+"' CATEGORIA='"+Preferencia.getCategoria()+"' WHERE ID='"+Preferencia.getId()+"'"
 		;
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		recursos.add(prepStmt);

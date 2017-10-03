@@ -1,5 +1,6 @@
 package vos;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Producto {
@@ -18,9 +19,11 @@ public class Producto {
 	private double precio;
 	@JsonProperty(value="categoria")
 	private Categoria categoria;
+	@JsonProperty(value="cantidad")
+	private double cantidad;
 	
 	
-	public Producto(@JsonProperty(value="nombre")String nombre,@JsonProperty(value="info")String info,@JsonProperty(value="traduccion")String traduccion,@JsonProperty(value="preparacion")String preparacion,@JsonProperty(value="costoProduccion")double costoProduccion,@JsonProperty(value="precio")double precio,@JsonProperty(value="categoria")Categoria categoria)
+	public Producto(@JsonProperty(value="nombre")String nombre,@JsonProperty(value="info")String info,@JsonProperty(value="traduccion")String traduccion,@JsonProperty(value="preparacion")String preparacion,@JsonProperty(value="costoProduccion")double costoProduccion,@JsonProperty(value="precio")double precio,@JsonProperty(value="categoria")Categoria categoria,	@JsonProperty(value="cantidad")double cantidad)
 	{
 		this.nombre=nombre;
 		this.info=info;
@@ -29,6 +32,7 @@ public class Producto {
 		this.costoProduccion=costoProduccion;
 		this.precio=precio;
 		this.categoria=categoria;
+		this.cantidad=cantidad;
 	}
 
 	public String getNombre() {
@@ -85,6 +89,14 @@ public class Producto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public double getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(double cantidad) {
+		this.cantidad = cantidad;
 	}
 	
 	

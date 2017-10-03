@@ -71,6 +71,7 @@ public class DAOReservaRotond {
 			int horas = rs.getInt("HORAS");
 			int numComensales = rs.getInt("NUMCOMENSALES");
 			String zonaPreferencia = rs.getString("ZONA_PREFERENCIA");
+			
 			Reservas.add(new Reserva(id, fecha, horas, numComensales, zonaPreferencia));
 		}
 		return Reservas;

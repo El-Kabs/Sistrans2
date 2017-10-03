@@ -77,7 +77,8 @@ public class DAOProductoRotond {
 			double costo = rs.getDouble("COSTO_PRODUCCION");
 			double precio = rs.getDouble("PRECIO");
 			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
-			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria));
+			double cantidad= rs.getDouble("CANTIDAD");
+			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria,cantidad));
 		}
 		return productos;
 	}
@@ -107,7 +108,8 @@ public class DAOProductoRotond {
 			double costo = rs.getDouble("COSTO_PRODUCCION");
 			double precio = rs.getDouble("PRECIO");
 			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
-			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria));
+			double cantidad= rs.getDouble("CANTIDAD");
+			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria,cantidad));
 		}
 		return productos;
 	}
@@ -122,7 +124,7 @@ public class DAOProductoRotond {
 	 */
 	public void addProducto(Producto producto) throws SQLException, Exception {
 		
-		String sql2 = "INSERT INTO PRODUCTO VALUES ('"+producto.getNombre()+"', '"+producto.getInfo()+"', '"+producto.getTraduccion()+"', '"+producto.getPreparacion()+"', "+producto.getCostoProduccion()+","+producto.getPrecio()+","+producto.getCategoria()+")";
+		String sql2 = "INSERT INTO PRODUCTO VALUES ('"+producto.getNombre()+"', '"+producto.getInfo()+"', '"+producto.getTraduccion()+"', '"+producto.getPreparacion()+"', "+producto.getCostoProduccion()+","+producto.getPrecio()+",'"+producto.getCategoria()+"',"+producto.getCantidad()+ ")";
 //		INSERT INTO USUARIOS VALUES(1, 'Kobs', 'kobs@kobs.com', 'admin', 'kabska83');
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);

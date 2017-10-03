@@ -143,7 +143,7 @@ public class DAOMenuRotond {
 	 */
 	public void addMenu(Menu menu) throws SQLException, Exception {
 		
-		String sql2 = "INSERT INTO MENU VALUES ("+menu.getId()+", '"+menu.getNombre()+"', "+menu.getCosto()+", '"+menu.getNombre()+"')";
+		String sql2 = "INSERT INTO MENU VALUES ("+menu.getId()+", '"+menu.getNombre()+"', "+menu.getCosto()+", '"+menu.getRestaurante()+"')";
 //		INSERT INTO USUARIOS VALUES(1, 'Kobs', 'kobs@kobs.com', 'admin', 'kabska83');
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);

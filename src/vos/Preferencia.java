@@ -14,10 +14,13 @@ public class Preferencia {
 	private Categoria categoria;
 	@JsonProperty(value="id")
 	private Integer id;
+	@JsonProperty(value="usuario")
+	private Integer usuario;
 	
 	
-	public Preferencia(@JsonProperty(value="id")Integer id,@JsonProperty(value="zona")String zona,@JsonProperty(value="precioMin")double precioMin,@JsonProperty(value="precioMax")double precioMax,@JsonProperty(value="categoria")Categoria categoria)
+	public Preferencia(@JsonProperty(value="id")Integer id,@JsonProperty(value="zona")String zona,@JsonProperty(value="precioMin")double precioMin,@JsonProperty(value="precioMax")double precioMax,@JsonProperty(value="categoria")Categoria categoria,	@JsonProperty(value="usuario")Integer usuario)
 	{
+		this.usuario=usuario;
 		this.id=id;
 		this.zona=zona;
 		this.precioMin=precioMin;
@@ -64,6 +67,15 @@ public class Preferencia {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	public Integer getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Integer usuario) {
+		this.usuario = usuario;
+	}
+	
 	
 
 }
