@@ -5,21 +5,32 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Pedido {
 	
 	@JsonProperty(value="id")
-	private Integer id;
+	private Long id;
 	@JsonProperty(value="costoTotal")
 	private double costoTotal;
+	@JsonProperty(value="id_usuario")
+	private Long idUsuario;
 
-    public Pedido(@JsonProperty(value="id")Integer id,@JsonProperty(value="costoTotal") double costoTotal)
+    public Pedido(@JsonProperty(value="id")Long id,@JsonProperty(value="costoTotal") double costoTotal, @JsonProperty(value="id_usuario") Long idUsuario)
     {
     	this.id=id;
     	this.costoTotal=costoTotal;
+    	this.idUsuario=idUsuario;
     }
 	
-	public Integer getId() {
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

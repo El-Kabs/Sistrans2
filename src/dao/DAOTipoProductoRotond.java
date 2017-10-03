@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.CondicionTecnica;
-import vos.Espacio;
-import vos.Ingrediente;
+import vos.TipoProducto;
 
-public class DAOCondicionTecnicaRotond {
+public class DAOTipoProductoRotond {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -25,7 +24,7 @@ public class DAOCondicionTecnicaRotond {
 	 * Metodo constructor que crea DAOVideo
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
-	public DAOCondicionTecnicaRotond() {
+	public DAOTipoProductoRotond() {
 		recursos = new ArrayList<Object>();
 	}
 
@@ -59,36 +58,36 @@ public class DAOCondicionTecnicaRotond {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<CondicionTecnica> darCondicion() throws SQLException, Exception {
-		ArrayList<CondicionTecnica> condiciones = new ArrayList<CondicionTecnica>();
+	public ArrayList<TipoProducto> darTiposProductos() throws SQLException, Exception {
+		ArrayList<TipoProducto> tiposProducto = new ArrayList<TipoProducto>();
 
-		String sql = "SELECT * FROM CONDICION_TECNICA";
+		String sql = "SELECT * FROM TIPO_PRODUCTO";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String condicion = rs.getString("CONDICION");
-			condiciones.add(new CondicionTecnica(condicion));
+			String tipo = rs.getString("TIPO");
+			tiposProducto.add(new TipoProducto(tipo));
 		}
-		return condiciones;
+		return tiposProducto;
 	}
 	
-	public ArrayList<CondicionTecnica> buscarCondicionPorCondicion(String condicion) throws SQLException, Exception {
-		ArrayList<CondicionTecnica> condiciones = new ArrayList<CondicionTecnica>();
+	public ArrayList<TipoProducto> buscarTipoPorTipo(String tipo) throws SQLException, Exception {
+		ArrayList<TipoProducto> tipos = new ArrayList<TipoProducto>();
 
-		String sql = "SELECT * FROM CONDICION_TECNICA WHERE CONDICION ='" + condicion + "'";
+		String sql = "SELECT * FROM TIPO_PRODUCTO WHERE TIPO ='" + tipo + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String condicion2 = rs.getString("CONDICION");
-			condiciones.add(new CondicionTecnica(condicion2));
+			String tipo2 = rs.getString("TIPO");
+			tipos.add(new TipoProducto(tipo2));
 		}
-		return condiciones;
+		return tipos;
 	}
 	/**
 	 * Metodo que agrega el video que entra como parametro a la base de datos.
@@ -98,9 +97,9 @@ public class DAOCondicionTecnicaRotond {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo agregar el video a la base de datos
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void addCondicionTecnica(CondicionTecnica condicion) throws SQLException, Exception {
+	public void addTipoProducto(TipoProducto tipo) throws SQLException, Exception {
 		
-		String sql2 = "INSERT INTO CONDICION_TECNICA VALUES ('"+condicion.getCondicion()+"')";
+		String sql2 = "INSERT INTO TIPO_PRODUCTO VALUES ('"+tipo.getTipo()+"')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		recursos.add(prepStmt);
@@ -134,10 +133,10 @@ public class DAOCondicionTecnicaRotond {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el video.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void deleteCondicionTecnica(CondicionTecnica condicion) throws SQLException, Exception {
+	public void deleteTipoProducto(TipoProducto tipo) throws SQLException, Exception {
 
-		String sql = "DELETE FROM CONDICION_TECNICA";
-		sql += " WHERE CONDICION = " + condicion.getCondicion();
+		String sql = "DELETE FROM TIPO_PRODUCTO";
+		sql += " WHERE TIPO = " + tipo.getTipo();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
