@@ -2,14 +2,14 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class VOVerificacion {
+public class VOVerificacionCliente {
 	
 	@JsonProperty(value="admin")
 	private Usuario admin;
 	@JsonProperty(value="usuario")
 	private Usuario usuario;
 	
-	public VOVerificacion(	@JsonProperty(value="admin")Usuario admin,	@JsonProperty(value="usuario")Usuario usuario) 
+	public VOVerificacionCliente(	@JsonProperty(value="admin")Usuario admin,	@JsonProperty(value="usuario")Usuario usuario) 
 	{
 		this.admin=admin;
 		this.usuario=usuario;

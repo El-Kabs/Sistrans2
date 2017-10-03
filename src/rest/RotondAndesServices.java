@@ -31,7 +31,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
 import vos.Usuario;
-import vos.VOVerificacion;
+import vos.VOVerificacionCliente;
 
 /**
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/videos/...
@@ -130,7 +130,7 @@ public class RotondAndesServices {
 	@Path("admin")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addUserByAdmin(VOVerificacion verificacion)
+	public Response addUserByAdmin(VOVerificacionCliente verificacion)
 	{
 		Usuario admin=verificacion.getAdmin();
 		Usuario usu=verificacion.getUsuario();
