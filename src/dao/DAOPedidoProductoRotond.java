@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Categoria;
 import vos.Pago;
 import vos.Pedido;
 import vos.PedidoProducto;
 import vos.Producto;
+import vos.Restaurante;
+import vos.RestauranteProducto;
 
 public class DAOPedidoProductoRotond {
 	private ArrayList<Object> recursos;
@@ -58,23 +61,30 @@ public class DAOPedidoProductoRotond {
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
 	public ArrayList<PedidoProducto> darPedidoProducto() throws SQLException, Exception {
-		ArrayList<PedidoProducto> pedidosProductos = new ArrayList<PedidoProducto>();
-		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
-		DAOProductoRotond productoDAO = new DAOProductoRotond();
-		String sql = "SELECT * FROM PEDIDO_PRODUCTO";
-
+		ArrayList<PedidoProducto> pedidoProducto = new ArrayList<PedidoProducto>();
+		String sql = "SELECT * FROM(SELECT * FROM PEDIDO a JOIN PEDIDO_PRODUCTO c ON a.ID = c.ID_PEDIDO) e JOIN PRODUCTO f ON e.NOMBRE_PRODUCTO = f.NOMBRE"; 
+		ArrayList<Producto> productos = new ArrayList<Producto>();
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
 			Long idPedido = rs.getLong("ID_PEDIDO");
+			Long idUsuario = rs.getLong("ID_USUARIO");
+			double costo = rs.getDouble("COSTO_TOTAL");
 			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
-			Pedido pedido = pedidoDao.buscarPedidoPorId(idPedido);
-			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(nombreProducto);
-			pedidosProductos.add(new PedidoProducto(producto, pedido));
+			String informacionProducto = rs.getString("INFORMACION");
+			String traduccionProducto = rs.getString("TRADUCCION");
+			String preparacionProducto = rs.getString("PREPARACION");
+			int costoProducto = rs.getInt("COSTO_PRODUCCION");
+			double precioProducto = rs.getDouble("PRECIO");
+			Categoria categoriaProducto = Categoria.valueOf(rs.getString("CATEGORIA"));
+			Producto producto =new Producto(nombreProducto, informacionProducto, traduccionProducto, preparacionProducto, costoProducto, precioProducto, categoriaProducto);
+			Pedido pedido = new Pedido(idPedido, costo, idUsuario, "PENDIENTE");
+			productos.add(producto);
+			pedidoProducto.add(new PedidoProducto(productos, pedido));
 		}
-		return pedidosProductos;
+		return pedidoProducto;
 	}
 
 	public void addPedidoProducto(PedidoProducto pedidoProducto) throws SQLException, Exception {

@@ -32,7 +32,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import tm.RotondAndesTM;
 import vos.Zona;
 import vos.Usuario;
+import vos.VOConsultaZona;
 import vos.VOVerificacionCliente;
+import vos.VOVerificacionIngrediente;
 import vos.VOVerificacionZona;
 
 /**
@@ -93,11 +95,11 @@ public class RotondAndesServicesZona {
 	@Produces( { MediaType.APPLICATION_JSON } )
 	public Response getZonaName( @QueryParam("nombre") String name) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Zona> Zonas;
+		List<VOConsultaZona> Zonas;
 		try {
 			if (name == null || name.length() == 0)
 				throw new Exception("Nombre del Zona no valido");
-			Zonas = tm.buscarZonaPorNombre(name);
+			Zonas = tm.darZonaInfoPorNombre(name);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

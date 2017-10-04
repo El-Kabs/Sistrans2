@@ -94,6 +94,21 @@ public class DAOUsuarioRotond {
 		}
 		return usuarios;
 	}
+	
+	/**
+	 * @throws SQLException 
+	 * 
+	 */
+	public ArrayList<VOUsuarioConsulta> darClientes() throws SQLException
+	{
+		ArrayList<VOUsuarioConsulta> usuarios= new ArrayList<>();
+		String sql= "  SELECT *FROM(SELECT ID_USUARIO,EMAIL,NOMBRE,ROL,PASSWORD,CATEGORIA,PRECIO_MIN,PRECIO_MAX,ZONA,ID_PREFERENCIA FROM USUARIOS JOIN PREFERENCIA ON USUARIOS.ID=PREFERENCIA.ID_USUARIO)t1  WHERE ROL='UsuarioRegistrado';\r\n" + 
+				"";
+		PreparedStatement prepStmt= conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs=prepStmt.executeQuery();
+		return null;
+	}
 
 
 	/**

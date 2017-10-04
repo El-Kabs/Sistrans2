@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Categoria;
 import vos.Pedido;
 import vos.PedidoProducto;
 import vos.Producto;
+import vos.Restaurante;
+import vos.RestauranteProducto;
 
 public class DAORestauranteProductoRotond {
 	private ArrayList<Object> recursos;
@@ -56,83 +59,111 @@ public class DAORestauranteProductoRotond {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<PedidoProducto> darPedidoProducto() throws SQLException, Exception {
-		ArrayList<PedidoProducto> pedidosProductos = new ArrayList<PedidoProducto>();
-		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
-		DAOProductoRotond productoDAO = new DAOProductoRotond();
-		String sql = "SELECT * FROM PEDIDO_PRODUCTO";
-
+	public ArrayList<RestauranteProducto> darRestauranteProducto() throws SQLException, Exception {
+		ArrayList<RestauranteProducto> restauranteProducto = new ArrayList<RestauranteProducto>();
+		String sql = "SELECT * FROM(SELECT * FROM RESTAURANTE a JOIN RESTAURANTE_PRODUCTO c ON a.NOMBRE=c.NOMBRE_RESTAURANTE)e JOIN PRODUCTO f ON e.NOMBRE_PRODUCTO=f.NOMBRE;"; 
+		ArrayList<Producto> productos = new ArrayList<Producto>();
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPedido = rs.getLong("ID_PEDIDO");
+			String nombreRestaurante = rs.getString("NOMBRE");
+			String representanteRestaurante = rs.getString("REPRESENTANTE");
+			String paginaRestaurante = rs.getString("PAGINA_WEB");
+			String tipoRestaurante = rs.getString("TIPO_COMIDA_RESTAURANTE");
+			String zonaRestaurante = rs.getString("ZONA_RESTAURANTE");
 			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
-			Pedido pedido = pedidoDao.buscarPedidoPorId(idPedido);
-			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(nombreProducto);
-			pedidosProductos.add(new PedidoProducto(producto, pedido));
+			int cantidadProducto = rs.getInt("CANTIDAD");
+			String informacionProducto = rs.getString("INFORMACION");
+			String traduccionProducto = rs.getString("TRADUCCION");
+			String preparacionProducto = rs.getString("PREPARACION");
+			int costoProducto = rs.getInt("COSTO_PRODUCCION");
+			double precioProducto = rs.getDouble("PRECIO");
+			Categoria categoriaProducto = Categoria.valueOf(rs.getString("CATEGORIA"));
+			Producto producto = new Producto(nombreProducto, informacionProducto, traduccionProducto, preparacionProducto, costoProducto, precioProducto, categoriaProducto);
+			Restaurante restaurante = new Restaurante(nombreRestaurante, representanteRestaurante, paginaRestaurante, tipoRestaurante, zonaRestaurante);
+			restauranteProducto.add(new RestauranteProducto(restaurante, producto, cantidadProducto));
 		}
-		return pedidosProductos;
+		return restauranteProducto;
 	}
 
-	public void addPedidoProducto(PedidoProducto pedidoProducto) throws SQLException, Exception {
+	public void addRestauranteProducto(RestauranteProducto restauranteProducto	) throws SQLException, Exception {
 		
 		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
 		DAOProductoRotond productoDAO = new DAOProductoRotond();
 		
-		for(int i = 0; i<pedidoProducto.getProducto().size(); i++) {
-			String sql2 = "INSERT INTO PEDIDO_PRODUCTO VALUES ("+pedidoProducto.getPedido().getId()+", '"+pedidoProducto.getProducto().get(i).getNombre()+"')";
+			String sql2 = "INSERT INTO RESTAURANTE_PRODUCTO VALUES ('"+restauranteProducto.getRestaurante().getNombre()+"', '"+restauranteProducto.getProducto().getNombre()+"', "+restauranteProducto.getCantidad()+")";
 			PreparedStatement prepStmt = conn.prepareStatement(sql2);
 			recursos.add(prepStmt);
 			prepStmt.executeQuery();
-		}
-	
 	}
 	
-	public PedidoProducto buscarPedidoProductoPorId(Long id) throws SQLException, Exception 
+	public RestauranteProducto buscarRestauranteProductoPorNameRestaurante(String name) throws SQLException, Exception 
 	{
-		PedidoProducto pedidoProducto = null;
+		RestauranteProducto restauranteProducto = null;
 		
 		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
 		DAOProductoRotond productoDAO = new DAOProductoRotond();
 
-		String sql = "SELECT * FROM PEDIDO_PRODUCTO WHERE ID_PEDIDO =" + id;
+		String sql = "SELECT * FROM(SELECT * FROM RESTAURANTE a JOIN RESTAURANTE_PRODUCTO c ON a.NOMBRE=c.NOMBRE_RESTAURANTE)e JOIN PRODUCTO f ON e.NOMBRE_PRODUCTO=f.NOMBRE' WHERE e.NOMBRE = '" + name+"'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPedido = rs.getLong("ID_PEDIDO");
+			String nombreRestaurante = rs.getString("NOMBRE");
+			String representanteRestaurante = rs.getString("REPRESENTANTE");
+			String paginaRestaurante = rs.getString("PAGINA_WEB");
+			String tipoRestaurante = rs.getString("TIPO_COMIDA_RESTAURANTE");
+			String zonaRestaurante = rs.getString("ZONA_RESTAURANTE");
 			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
-			Pedido pedido = pedidoDao.buscarPedidoPorId(idPedido);
-			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(nombreProducto);
-			pedidoProducto = new PedidoProducto(producto, pedido);
+			int cantidadProducto = rs.getInt("CANTIDAD");
+			String informacionProducto = rs.getString("INFORMACION");
+			String traduccionProducto = rs.getString("TRADUCCION");
+			String preparacionProducto = rs.getString("PREPARACION");
+			int costoProducto = rs.getInt("COSTO_PRODUCCION");
+			double precioProducto = rs.getDouble("PRECIO");
+			Categoria categoriaProducto = Categoria.valueOf(rs.getString("CATEGORIA"));
+			Producto producto = new Producto(nombreProducto, informacionProducto, traduccionProducto, preparacionProducto, costoProducto, precioProducto, categoriaProducto);
+			Restaurante restaurante = new Restaurante(nombreRestaurante, representanteRestaurante, paginaRestaurante, tipoRestaurante, zonaRestaurante);
+			restauranteProducto = new RestauranteProducto(restaurante, producto, cantidadProducto);
 		}
-		return pedidoProducto;
+		return restauranteProducto;
 	}
 	
-	public PedidoProducto buscarPedidoProductoPorName(String name) throws SQLException, Exception 
+	public RestauranteProducto buscarRestauranteProductoPorNameProducto(String name) throws SQLException, Exception 
 	{
-		PedidoProducto pedidoProducto = null;
+		RestauranteProducto restauranteProducto = null;
 		
 		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
 		DAOProductoRotond productoDAO = new DAOProductoRotond();
 
-		String sql = "SELECT * FROM PEDIDO_PRODUCTO WHERE NOMBRE_PRODUCTO ='" + name+"'";
+		String sql = "SELECT * FROM(SELECT * FROM RESTAURANTE a JOIN RESTAURANTE_PRODUCTO c ON a.NOMBRE=c.NOMBRE_RESTAURANTE)e JOIN PRODUCTO f ON e.NOMBRE_PRODUCTO=f.NOMBRE WHERE e.Nombre_Producto = '" + name+"'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idPedido = rs.getLong("ID_PEDIDO");
+			String nombreRestaurante = rs.getString("NOMBRE");
+			String representanteRestaurante = rs.getString("REPRESENTANTE");
+			String paginaRestaurante = rs.getString("PAGINA_WEB");
+			String tipoRestaurante = rs.getString("TIPO_COMIDA_RESTAURANTE");
+			String zonaRestaurante = rs.getString("ZONA_RESTAURANTE");
 			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
-			Pedido pedido = pedidoDao.buscarPedidoPorId(idPedido);
-			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(nombreProducto);
-			pedidoProducto = new PedidoProducto(producto, pedido);
+			int cantidadProducto = rs.getInt("CANTIDAD");
+			String informacionProducto = rs.getString("INFORMACION");
+			String traduccionProducto = rs.getString("TRADUCCION");
+			String preparacionProducto = rs.getString("PREPARACION");
+			int costoProducto = rs.getInt("COSTO_PRODUCCION");
+			double precioProducto = rs.getDouble("PRECIO");
+			Categoria categoriaProducto = Categoria.valueOf(rs.getString("CATEGORIA"));
+			Producto producto = new Producto(nombreProducto, informacionProducto, traduccionProducto, preparacionProducto, costoProducto, precioProducto, categoriaProducto);
+			Restaurante restaurante = new Restaurante(nombreRestaurante, representanteRestaurante, paginaRestaurante, tipoRestaurante, zonaRestaurante);
+			restauranteProducto = new RestauranteProducto(restaurante, producto, cantidadProducto);
 		}
-		return pedidoProducto;
+		return restauranteProducto;
 	}
 }

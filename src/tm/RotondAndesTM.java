@@ -5,7 +5,7 @@
  *
  * Materia: Sistemas Transaccionales
  * Ejercicio: VideoAndes
- * Autor: Juan Felipe García - jf.garcia268@uniandes.edu.co
+ * Autor: 
  * -------------------------------------------------------------------
  */
 package tm;
@@ -30,13 +30,16 @@ import dao.DAOPedidoProductoRotond;
 import dao.DAOPedidoRotond;
 import dao.DAOPreferenciaRotond;
 import dao.DAOProductoRotond;
+import dao.DAORestauranteProductoRotond;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.PedidoProducto;
 import vos.Preferencia;
 import vos.Producto;
 import vos.Restaurante;
+import vos.RestauranteProducto;
 import vos.Usuario;
+import vos.VOConsultaZona;
 import vos.Zona;
 
 /**
@@ -958,6 +961,40 @@ public class RotondAndesTM {
 		}
 		return zonas;
 	}
+	/**
+	 * 
+	 */
+	public List<VOConsultaZona> darZonaInfoPorNombre(String name) throws Exception {
+		List<VOConsultaZona> zonas;
+		DAOZonaRotond daoRotond = new DAOZonaRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			zonas = daoRotond.darZonaConInfo(name);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return zonas;
+	}
 
 	/**
 	 * Metodo que modela la transaccion que agrega un solo video a la base de datos.
@@ -1339,7 +1376,7 @@ public class RotondAndesTM {
 			//////transaccion
 			this.conn = darConexion();
 			daoRotond.setConn(conn);
-			preferencias = daoRotond.darPreferencia();
+			preferencias = daoRotond.darPreferencia(id);
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -1859,11 +1896,15 @@ public class RotondAndesTM {
 	public List<PedidoProducto> darPedidoProductos() throws Exception {
 		List<PedidoProducto> pedidosProductos;
 		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
+		DAOProductoRotond daoProducto = new DAOProductoRotond();
+		DAOPedidoRotond daoPedido = new DAOPedidoRotond();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
 			daoRotond.setConn(conn);
+			daoPedido.setConn(conn);
+			daoProducto.setConn(conn);
 			pedidosProductos = daoRotond.darPedidoProducto();
 
 		} catch (SQLException e) {
@@ -1893,6 +1934,7 @@ public class RotondAndesTM {
 		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
 		DAOProductoRotond productoDAO = new DAOProductoRotond();
 		DAORestauranteRotond restauranteDAO = new DAORestauranteRotond();
+		DAORestauranteProductoRotond productoRestauranteDAO = new DAORestauranteProductoRotond();
 		
 		try 
 		{
@@ -1901,13 +1943,17 @@ public class RotondAndesTM {
 			daoRotond.setConn(conn);
 			pedidoDao.setConn(conn);
 			productoDAO.setConn(conn);
+			productoRestauranteDAO.setConn(conn);
 			ArrayList<Producto> disponibles = new ArrayList<>();
 			for(int i = 0; i<pedidoProducto.getProducto().size(); i++){
-				if(pedidoProducto.getProducto().get(i).get)
+				RestauranteProducto productoVerif = productoRestauranteDAO.buscarRestauranteProductoPorNameProducto(pedidoProducto.getProducto().get(i).getNombre());
+				if(productoVerif.getCantidad()>=1) {
+					disponibles.add(productoVerif.getProducto());
+				}
 			}
-			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(pedidoProducto.getProducto().getNombre());
-			if(pedidoDao.buscarPedidoPorId(pedidoProducto.getPedido().get)!=null||producto.get(0)!=null) {
-				daoRotond.addPedidoProducto(pedidoProducto);
+			if(pedidoDao.buscarPedidoPorId(pedidoProducto.getPedido().getId())!=null) {
+				PedidoProducto agregar = new PedidoProducto(disponibles, pedidoProducto.getPedido());
+				daoRotond.addPedidoProducto(agregar);
 			}
 			conn.commit();
 

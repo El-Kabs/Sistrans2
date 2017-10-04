@@ -58,10 +58,10 @@ public class DAOPreferenciaRotond {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<Preferencia> darPreferencia() throws SQLException, Exception {
+	public ArrayList<Preferencia> darPreferencia(Integer idusu) throws SQLException, Exception {
 		ArrayList<Preferencia> Preferencias = new ArrayList<Preferencia>();
 
-		String sql = "SELECT * FROM PREFERENCIA";
+		String sql = "SELECT * FROM PREFERENCIA WHERE ID_USUARIO="+idusu;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -72,7 +72,7 @@ public class DAOPreferenciaRotond {
 			double precioMin = rs.getDouble("PRECIO_MIN");
 			double precioMax = rs.getDouble("PRECIO_MAX");
 			Integer id= rs.getInt("ID_preferencia");
-			String zona = rs.getString("ZONA_Preferencia");
+			String zona = rs.getString("ZONA");
 			Integer usuario=rs.getInt("ID_USUARIO");
 			Preferencias.add(new Preferencia(id, zona, precioMin, precioMax, categoria,usuario));
 		}

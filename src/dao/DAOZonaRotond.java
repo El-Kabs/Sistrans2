@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vos.Ingrediente;
+import vos.VOConsultaZona;
 import vos.Zona;
 
 public class DAOZonaRotond {
@@ -71,6 +72,40 @@ public class DAOZonaRotond {
 		}
 		return Zonas;
 	}
+	/**
+	 * @throws SQLException 
+	 * 
+	 */
+	public ArrayList<VOConsultaZona> darZonaConInfo(String name) throws SQLException
+	{
+		ArrayList<VOConsultaZona> zonas= new ArrayList<>();
+		String sql="SELECT NOMBRE_RESTAURANTE,PRODUCTO,ZONA_RESTAURANTE,FECHA FROM((SELECT * FROM\r\n" + 
+				" (SELECT NOMBRE_RESTAURANTE,NOMBRE_PRODUCTO producto,ZONA_RESTAURANTE FROM\r\n" + 
+				" (RESTAURANTE JOIN RESTAURANTE_PRODUCTO ON RESTAURANTE.NOMBRE=RESTAURANTE_PRODUCTO.NOMBRE_RESTAURANTE))t1 JOIN\r\n" + 
+				"  PEDIDO_PRODUCTO ON t1.producto=PEDIDO_PRODUCTO.NOMBRE_PRODUCTO)t2\r\n" + 
+				"  JOIN PEDIDO ON PEDIDO.ID=t2.ID_PEDIDO)\r\n" + 
+				" WHERE ZONA_RESTAURANTE = '"+name +"';";
+		PreparedStatement prepStmt= conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs=prepStmt.executeQuery();
+		while(rs.next())
+		{
+			String restaurante= rs.getString("NOMBRE_RESTAURANTE");
+			String producto=rs.getString("PRODUCTO");
+			String zona=rs.getString("ZONA_RESTAURANTE");
+			Date fecha= rs.getDate("FECHA");
+			VOConsultaZona vo= new VOConsultaZona(restaurante, producto, zona, fecha);
+			zonas.add(vo);
+		}
+		return zonas;
+	}
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	
 	public ArrayList<Zona> buscarZonasPorName(String name) throws SQLException, Exception {
 		ArrayList<Zona> Zonas = new ArrayList<Zona>();

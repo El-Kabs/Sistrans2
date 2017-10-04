@@ -68,7 +68,7 @@ public class DAOPedidoRotond {
 			Long id = rs.getLong("ID");
 			double costo = rs.getDouble("COSTO_TOTAL");
 			Long idUsuario = rs.getLong("ID_USUARIO");
-			pedidos.add(new Pedido(id, costo, idUsuario));
+			pedidos.add(new Pedido(id, costo, idUsuario, "PENDIENTE"));
 		}
 		return pedidos;
 	}
@@ -87,7 +87,7 @@ public class DAOPedidoRotond {
 			Long id2 = rs.getLong("ID");
 			double costo = rs.getDouble("COSTO_TOTAL");
 			Long idUsuario = rs.getLong("ID_USUARIO");
-			pedido = new Pedido(id, costo, idUsuario);
+			pedido = new Pedido(id, costo, idUsuario, "PENDIENTE");
 		}
 		return pedido;
 	}

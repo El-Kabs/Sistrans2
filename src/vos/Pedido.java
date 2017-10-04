@@ -10,12 +10,23 @@ public class Pedido {
 	private double costoTotal;
 	@JsonProperty(value="id_usuario")
 	private Long idUsuario;
+	@JsonProperty(value="estado")
+	private String estado;
 
-    public Pedido(@JsonProperty(value="id")Long id,@JsonProperty(value="costoTotal") double costoTotal, @JsonProperty(value="id_usuario") Long idUsuario)
+    public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Pedido(@JsonProperty(value="id")Long id,@JsonProperty(value="costoTotal") double costoTotal, @JsonProperty(value="id_usuario") Long idUsuario, @JsonProperty(value="estado") String estado)
     {
     	this.id=id;
     	this.costoTotal=costoTotal;
     	this.idUsuario=idUsuario;
+    	this.estado = estado;
     }
 	
 	public Long getIdUsuario() {
