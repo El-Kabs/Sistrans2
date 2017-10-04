@@ -21,9 +21,10 @@ import vos.Menu;
 import vos.PedidoProducto;
 import vos.RestauranteProducto;
 import vos.Usuario;
+import vos.VORestaurantePedidoProducto;
 import vos.VOVerificacionMenu;
 
-@Path("/pedidoProducto")
+@Path("pedidoProducto")
 public class RotondAndesServicesPedidoProducto {
 	/**
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
@@ -111,12 +112,12 @@ public class RotondAndesServicesPedidoProducto {
 	
 	@PUT
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public void updatePedidoEstado( PedidoProducto pedidoProducto, RestauranteProducto restauranteProducto)
+	public void updatePedidoEstado( VORestaurantePedidoProducto algoquenecesito)
 	{
 		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
 		try
 		{
-			 tm.updatePedidoEstado(pedidoProducto, restauranteProducto);	
+			 tm.updatePedidoEstado(algoquenecesito.getPedido(), algoquenecesito.getRestaurante());	
 		}
 		catch( Exception e )
 		{
