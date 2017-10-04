@@ -166,4 +166,9 @@ public class DAORestauranteProductoRotond {
 		}
 		return restauranteProducto;
 	}
+	
+	public void disminuirCantidad(RestauranteProducto restaurante){
+		String sql = "UPDATE RESTAURANTE_PRODUCTO SET CANTIDAD = CANTIDAD - 1 WHERE NOMBRE_PRODUCTO='"+restaurante.getProducto().getNombre()+"'";
+	}
+	
 }
