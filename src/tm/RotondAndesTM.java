@@ -1855,6 +1855,7 @@ public class RotondAndesTM {
 		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
 		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
 		DAOProductoRotond productoDAO = new DAOProductoRotond();
+		DAORestauranteRotond restauranteDAO = new DAORestauranteRotond();
 		
 		try 
 		{
@@ -1863,8 +1864,12 @@ public class RotondAndesTM {
 			daoRotond.setConn(conn);
 			pedidoDao.setConn(conn);
 			productoDAO.setConn(conn);
+			ArrayList<Producto> disponibles = new ArrayList<>();
+			for(int i = 0; i<pedidoProducto.getProducto().size(); i++){
+				if(pedidoProducto.getProducto().get(i).get)
+			}
 			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(pedidoProducto.getProducto().getNombre());
-			if(pedidoDao.buscarPedidoPorId(pedidoProducto.getPedido().getId())!=null||producto.get(0)!=null) {
+			if(pedidoDao.buscarPedidoPorId(pedidoProducto.getPedido().get)!=null||producto.get(0)!=null) {
 				daoRotond.addPedidoProducto(pedidoProducto);
 			}
 			conn.commit();

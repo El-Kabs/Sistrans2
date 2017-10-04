@@ -6,12 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Pago;
 import vos.Pedido;
 import vos.PedidoProducto;
 import vos.Producto;
 
-public class DAOPedidoProductoRotond {
+public class DAORestauranteProductoRotond {
 	private ArrayList<Object> recursos;
 
 	/**
@@ -23,7 +22,7 @@ public class DAOPedidoProductoRotond {
 	 * Metodo constructor que crea DAOVideo
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
-	public DAOPedidoProductoRotond() {
+	public DAORestauranteProductoRotond() {
 		recursos = new ArrayList<Object>();
 	}
 
