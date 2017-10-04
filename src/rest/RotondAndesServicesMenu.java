@@ -79,7 +79,7 @@ public class RotondAndesServicesMenu {
 		try {
 			if (name == null || name.length() == 0)
 				throw new Exception("Nombre del Menu no valido");
-			Menus = tm.buscarMenuPorId(name);
+			Menus = tm.buscarMenuPorName(name);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

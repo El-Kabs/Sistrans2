@@ -134,8 +134,8 @@ public class DAOZonaRotond {
 	 */
 	public void deleteZona(Zona Zona) throws SQLException, Exception {
 
-		String sql = "DELETE FROM Zona";
-		sql += " WHERE NOMBRE = " + Zona.getNombre();
+		String sql = "DELETE FROM ZONA";
+		sql += " WHERE NOMBRE = '" + Zona.getNombre()+"'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
