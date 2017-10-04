@@ -84,7 +84,7 @@ public class DAOZonaRotond {
 				" (RESTAURANTE JOIN RESTAURANTE_PRODUCTO ON RESTAURANTE.NOMBRE=RESTAURANTE_PRODUCTO.NOMBRE_RESTAURANTE))t1 JOIN\r\n" + 
 				"  PEDIDO_PRODUCTO ON t1.producto=PEDIDO_PRODUCTO.NOMBRE_PRODUCTO)t2\r\n" + 
 				"  JOIN PEDIDO ON PEDIDO.ID=t2.ID_PEDIDO)\r\n" + 
-				" WHERE ZONA_RESTAURANTE = '"+name +"';";
+				" WHERE ZONA_RESTAURANTE = '"+name +"'";
 		PreparedStatement prepStmt= conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs=prepStmt.executeQuery();

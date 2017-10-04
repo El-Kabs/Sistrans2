@@ -93,7 +93,7 @@ public class RotondAndesServicesZona {
 	@GET
 	@Path( "{nombre}" )
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getZonaName( @QueryParam("nombre") String name) {
+	public Response getZonaName( @PathParam("nombre") String name) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<VOConsultaZona> Zonas;
 		try {
