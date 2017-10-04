@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vos.Categoria;
 import vos.Pago;
@@ -69,6 +70,7 @@ public class DAOPedidoProductoRotond {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
+			Date fecha= rs.getDate("FECHA");
 			Long idPedido = rs.getLong("ID_PEDIDO");
 			Long idUsuario = rs.getLong("ID_USUARIO");
 			double costo = rs.getDouble("COSTO_TOTAL");
@@ -80,7 +82,7 @@ public class DAOPedidoProductoRotond {
 			double precioProducto = rs.getDouble("PRECIO");
 			Categoria categoriaProducto = Categoria.valueOf(rs.getString("CATEGORIA"));
 			Producto producto =new Producto(nombreProducto, informacionProducto, traduccionProducto, preparacionProducto, costoProducto, precioProducto, categoriaProducto);
-			Pedido pedido = new Pedido(idPedido, costo, idUsuario, "PENDIENTE");
+			Pedido pedido = new Pedido(idPedido, costo, idUsuario, "PENDIENTE",fecha);
 			productos.add(producto);
 			pedidoProducto.add(new PedidoProducto(productos, pedido));
 		}

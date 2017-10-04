@@ -31,6 +31,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
 import vos.Usuario;
+import vos.VOUsuarioConsulta;
 import vos.VOVerificacionCliente;
 
 /**
@@ -78,6 +79,28 @@ public class RotondAndesServicesUsuario {
 		}
 		return Response.status(200).entity(usuarios).build();
 	}
+	
+	/**
+	 * Metodo que expone servicio REST usando GET que da todos los videos de la base de datos.
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
+	 * @return Json con todos los videos de la base de datos o json con 
+     * el error que se produjo
+	 */
+	@GET
+	@Path("detailed")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getClientes() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<VOUsuarioConsulta> usuarios;
+		try {
+			usuarios = tm.darClientes();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuarios).build();
+	}
+	
+	
 
 	 /**
      * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
@@ -146,7 +169,7 @@ public class RotondAndesServicesUsuario {
 				return Response.status(200).entity(usu).build();
 			}
 			System.out.println("no entro");
-			return Response.status(402).entity("no puede registrar este usuario").build();
+			return Response.status(402).entity(doErrorMessage(new Exception("no puede agregar el usuario"))).build();
 			
 		}
 		catch(Exception e)

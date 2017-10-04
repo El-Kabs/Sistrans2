@@ -46,6 +46,14 @@ public class VOUsuarioConsulta {
 	public void setFrecuencia(double frecuencia) {
 		this.frecuencia = frecuencia;
 	}
+
+	public List<Preferencia> getPreferencias() {
+		return preferencias;
+	}
+
+	public void setPreferencias(List<Preferencia> preferencias) {
+		this.preferencias = preferencias;
+	}
 	
 	
 }

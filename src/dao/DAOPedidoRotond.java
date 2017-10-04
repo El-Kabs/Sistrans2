@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vos.Pago;
 import vos.Pedido;
@@ -68,7 +69,8 @@ public class DAOPedidoRotond {
 			Long id = rs.getLong("ID");
 			double costo = rs.getDouble("COSTO_TOTAL");
 			Long idUsuario = rs.getLong("ID_USUARIO");
-			pedidos.add(new Pedido(id, costo, idUsuario, "PENDIENTE"));
+			Date fecha= rs.getDate("FECHA");
+			pedidos.add(new Pedido(id, costo, idUsuario, "PENDIENTE",fecha));
 		}
 		return pedidos;
 	}
@@ -87,7 +89,8 @@ public class DAOPedidoRotond {
 			Long id2 = rs.getLong("ID");
 			double costo = rs.getDouble("COSTO_TOTAL");
 			Long idUsuario = rs.getLong("ID_USUARIO");
-			pedido = new Pedido(id, costo, idUsuario, "PENDIENTE");
+			Date fecha= rs.getDate("FECHA");
+			pedido = new Pedido(id, costo, idUsuario, "PENDIENTE",fecha);
 		}
 		return pedido;
 	}

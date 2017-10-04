@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Pedido {
@@ -12,7 +14,8 @@ public class Pedido {
 	private Long idUsuario;
 	@JsonProperty(value="estado")
 	private String estado;
-
+	@JsonProperty(value="fecha")
+    private Date fecha;
     public String getEstado() {
 		return estado;
 	}
@@ -21,12 +24,13 @@ public class Pedido {
 		this.estado = estado;
 	}
 
-	public Pedido(@JsonProperty(value="id")Long id,@JsonProperty(value="costoTotal") double costoTotal, @JsonProperty(value="id_usuario") Long idUsuario, @JsonProperty(value="estado") String estado)
+	public Pedido(@JsonProperty(value="id")Long id,@JsonProperty(value="costoTotal") double costoTotal, @JsonProperty(value="id_usuario") Long idUsuario, @JsonProperty(value="estado") String estado,@JsonProperty(value="fecha")Date fecha)
     {
     	this.id=id;
     	this.costoTotal=costoTotal;
     	this.idUsuario=idUsuario;
     	this.estado = estado;
+    	this.fecha=fecha;
     }
 	
 	public Long getIdUsuario() {
@@ -51,6 +55,14 @@ public class Pedido {
 
 	public void setCostoTotal(double costoTotal) {
 		this.costoTotal = costoTotal;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 	
 	

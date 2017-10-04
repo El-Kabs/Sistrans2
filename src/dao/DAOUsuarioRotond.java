@@ -16,6 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import vos.*;
 
@@ -94,7 +97,7 @@ public class DAOUsuarioRotond {
 		}
 		return usuarios;
 	}
-	
+
 	/**
 	 * @throws SQLException 
 	 * 
@@ -102,12 +105,83 @@ public class DAOUsuarioRotond {
 	public ArrayList<VOUsuarioConsulta> darClientes() throws SQLException
 	{
 		ArrayList<VOUsuarioConsulta> usuarios= new ArrayList<>();
-		String sql= "  SELECT *FROM(SELECT ID_USUARIO,EMAIL,NOMBRE,ROL,PASSWORD,CATEGORIA,PRECIO_MIN,PRECIO_MAX,ZONA,ID_PREFERENCIA FROM USUARIOS JOIN PREFERENCIA ON USUARIOS.ID=PREFERENCIA.ID_USUARIO)t1  WHERE ROL='UsuarioRegistrado';\r\n" + 
-				"";
+		String sql= "SELECT * FROM(SELECT ID_USUARIO,EMAIL,NOMBRE,ROL,PASSWORD,CATEGORIA,PRECIO_MIN,PRECIO_MAX,ZONA,ID_PREFERENCIA FROM USUARIOS JOIN PREFERENCIA ON USUARIOS.ID= PREFERENCIA.ID_USUARIO)t1 JOIN PEDIDO ON t1.ID_USUARIO=PEDIDO.ID_USUARIO WHERE ROL='UsuarioRegistrado'";
+		System.out.println(sql);
 		PreparedStatement prepStmt= conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs=prepStmt.executeQuery();
-		return null;
+		while(rs.next())
+		{
+			System.out.println("ENTREEEEEEEEEE");
+			boolean yaEstaPreferencia=false;
+			boolean yaEstaPedido=false;
+			List<Pedido> peds= new ArrayList<>();
+			List<Preferencia> prefs= new ArrayList<>();
+			Integer idUsuario=rs.getInt("ID_USUARIO");
+			String email= rs.getString("EMAIL");
+			String nombre=rs.getString("NOMBRE");
+			String rol= rs.getString("ROL");
+			String password= rs.getString("PASSWORD");
+			Categoria categoria=Categoria.valueOf(rs.getString("CATEGORIA"));
+			double precioMin=rs.getDouble("PRECIO_MIN");
+			double precioMax= rs.getDouble("PRECIO_MAX");
+			String zona= rs.getString("ZONA");
+			Integer idPreferencia=rs.getInt("ID_PREFERENCIA");
+			Integer idPedido= rs.getInt("ID");
+			double costoTotal=rs.getDouble("COSTO_TOTAL");
+			Date fecha= rs.getDate("FECHA");
+			String estado= rs.getString("ESTADO");
+			Usuario usu= new Usuario(Long.valueOf(idUsuario), nombre, email, rol, password);
+			Preferencia preferencia= new Preferencia(idPreferencia, zona, precioMin, precioMax,categoria, idUsuario);
+			Pedido pedido= new Pedido(Long.valueOf(idPedido), costoTotal, Long.valueOf(idUsuario), estado, fecha);
+			for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
+				VOUsuarioConsulta voUsuarioConsulta = (VOUsuarioConsulta) iterator.next();
+				if (voUsuarioConsulta.getUsuario().getId()==Long.valueOf(idUsuario)){
+					peds=voUsuarioConsulta.getPedidos();
+					prefs=voUsuarioConsulta.getPreferencias();
+				}
+			}
+			for (Iterator iterator = prefs.iterator(); iterator.hasNext();) {
+				Preferencia prefActual = (Preferencia) iterator.next();
+				if(prefActual.getId()==idPreferencia)
+				{
+					yaEstaPreferencia=true;
+				}
+			}
+			for (Iterator iterator = peds.iterator(); iterator.hasNext();) {
+				Pedido pedi = (Pedido) iterator.next();
+				if(pedi.getId()==Long.valueOf(idPedido))
+				{
+					yaEstaPedido=true;
+				}
+			}
+			if(!yaEstaPedido)
+			{
+				peds.add(pedido);
+			}
+			if(!yaEstaPreferencia)
+			{
+				prefs.add(preferencia);
+			}
+			VOUsuarioConsulta co=new VOUsuarioConsulta(usu, peds, 0.0, prefs);
+			if(usuarios.size()!=0)
+			{
+			for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
+				VOUsuarioConsulta usuCons = (VOUsuarioConsulta) iterator.next();
+				if(usuCons.getUsuario().getId()==co.getUsuario().getId()) {
+					usuarios.remove(usuCons);
+					usuarios.add(co);
+				}
+				
+			}
+			}
+			else
+			{
+				usuarios.add(co);
+			}
+
+		}
+		return usuarios;
 	}
 
 
@@ -138,7 +212,7 @@ public class DAOUsuarioRotond {
 
 		return usuarios;
 	}
-	
+
 	/**
 	 * Metodo que busca el video con el id que entra como parametro.
 	 * @param name - Id de el video a buscar
@@ -184,9 +258,9 @@ public class DAOUsuarioRotond {
 		sql += "'"+usuario.getEmail() + "',";
 		sql += "'"+usuario.getRol() + "',";
 		sql += "'"+usuario.getPassword() + ")";
-		
+
 		String sql2 = "INSERT INTO USUARIOS VALUES ("+usuario.getId()+", '"+usuario.getNombre()+"', '"+usuario.getEmail()+"', '"+usuario.getRol()+"', '"+usuario.getPassword()+"')";
-//		INSERT INTO USUARIOS VALUES(1, 'Kobs', 'kobs@kobs.com', 'admin', 'kabska83');
+		//		INSERT INTO USUARIOS VALUES(1, 'Kobs', 'kobs@kobs.com', 'admin', 'kabska83');
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		System.out.println("SQL 1:"+sql);
@@ -195,7 +269,7 @@ public class DAOUsuarioRotond {
 		prepStmt.executeQuery();
 
 	}
-	
+
 	/**
 	 * Metodo que actualiza el video que entra como parametro en la base de datos.
 	 * @param usuario - el video a actualizar. video !=  null

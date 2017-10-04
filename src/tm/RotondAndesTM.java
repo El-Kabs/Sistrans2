@@ -40,6 +40,7 @@ import vos.Restaurante;
 import vos.RestauranteProducto;
 import vos.Usuario;
 import vos.VOConsultaZona;
+import vos.VOUsuarioConsulta;
 import vos.Zona;
 
 /**
@@ -398,6 +399,39 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+	
+	public List<VOUsuarioConsulta> darClientes() throws SQLException
+	{
+		List<VOUsuarioConsulta> usuarios;
+		DAOUsuarioRotond daoRotond = new DAOUsuarioRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			usuarios = daoRotond.darClientes();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuarios;
 	}
 	/////////////////////////////////////////////////
 	/////////////////////////////////////////////////
