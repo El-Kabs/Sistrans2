@@ -126,6 +126,14 @@ public class DAOPedidoRotond {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
+	public void updateEstadoPedido(Pedido pedido) throws SQLException, Exception {
+
+		String sql2 = "UPDATE PEDIDO SET ESTADO='ENTREGADO' WHERE ID="+pedido.getId();
+		PreparedStatement prepStmt = conn.prepareStatement(sql2);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 
 	/**
 	 * Metodo que elimina el video que entra como parametro en la base de datos.

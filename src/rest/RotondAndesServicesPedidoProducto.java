@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,10 +19,11 @@ import tm.RotondAndesTM;
 import vos.Ingrediente;
 import vos.Menu;
 import vos.PedidoProducto;
+import vos.RestauranteProducto;
 import vos.Usuario;
 import vos.VOVerificacionMenu;
 
-@Path("PedidoProducto")
+@Path("/pedidoProducto")
 public class RotondAndesServicesPedidoProducto {
 	/**
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
@@ -103,6 +105,22 @@ public class RotondAndesServicesPedidoProducto {
 		catch( Exception e )
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+
+	}
+	
+	@PUT
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public void updatePedidoEstado( PedidoProducto pedidoProducto, RestauranteProducto restauranteProducto)
+	{
+		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
+		try
+		{
+			 tm.updatePedidoEstado(pedidoProducto, restauranteProducto);	
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
 		}
 
 	}
