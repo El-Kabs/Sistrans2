@@ -3,16 +3,23 @@ package rest;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Ingrediente;
 import vos.Menu;
 import vos.PedidoProducto;
+import vos.Usuario;
+import vos.VOVerificacionMenu;
 
 @Path("PedidoProducto")
 public class RotondAndesServicesPedidoProducto {
@@ -29,23 +36,75 @@ public class RotondAndesServicesPedidoProducto {
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}
-	
-	
+
+
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
-	
+
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getPedidosProductos() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<PedidoProducto> pedidosProductos;
 		try {
-			pedidosProductos = tm.darMenus();
+			pedidosProductos = tm.darPedidoProductos();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(Menus).build();
+		return Response.status(200).entity(pedidosProductos).build();
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addMenuByRestaurante(PedidoProducto pedidoProducto)
+	{
+		try {
+			RotondAndesTM tm = new RotondAndesTM(getPath());
+			tm.addPedidoProducto(pedidoProducto);
+			return Response.status(200).entity(pedidoProducto).build();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+
+	@GET
+	@Path( "{nombre}" )
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getPedidoProductoName( @QueryParam("nombre") String name) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		PedidoProducto pedidoProducto;
+		try {
+			if (name == null || name.length() == 0)
+				throw new Exception("Nombre del producto no valido");
+			pedidoProducto = tm.buscarPedidoProductoPorName(name);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidoProducto).build();
+	}
+
+
+	@GET
+	@Path( "{id: \\d+}" )
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public Response getPedidoProducto( @PathParam( "id" ) Long id )
+	{
+		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
+		try
+		{
+			PedidoProducto v = tm.buscarPedidoProductoPorID(id);
+			return Response.status( 200 ).entity( v ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+
 	}
 
 }
