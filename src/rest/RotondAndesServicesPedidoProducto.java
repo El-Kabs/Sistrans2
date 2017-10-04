@@ -1,8 +1,20 @@
 package rest;
 
-import javax.servlet.ServletContext;
-import javax.ws.rs.core.Context;
+import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import tm.RotondAndesTM;
+import vos.Menu;
+import vos.PedidoProducto;
+
+@Path("PedidoProducto")
 public class RotondAndesServicesPedidoProducto {
 	/**
 	 * Atributo que usa la anotacion @Context para tener el ServletContext de la conexion actual.
@@ -22,4 +34,18 @@ public class RotondAndesServicesPedidoProducto {
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
+	
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getPedidosProductos() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<PedidoProducto> pedidosProductos;
+		try {
+			pedidosProductos = tm.darMenus();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(Menus).build();
+	}
+
 }

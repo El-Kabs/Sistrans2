@@ -25,10 +25,12 @@ import dao.DAOUsuarioRotond;
 import dao.DAOZonaRotond;
 import dao.DAOIngredienteRotond;
 import dao.DAOMenuRotond;
+import dao.DAOPedidoProductoRotond;
 import dao.DAOPreferenciaRotond;
 import dao.DAOProductoRotond;
 import vos.Ingrediente;
 import vos.Menu;
+import vos.PedidoProducto;
 import vos.Preferencia;
 import vos.Producto;
 import vos.Restaurante;
@@ -1395,7 +1397,7 @@ public class RotondAndesTM {
 		}
 		return restaurantes;
 	}
-	
+
 	public Preferencia buscarPreferenciaPorIdUsuario(Integer idUsuario) throws Exception {
 		Preferencia restaurantes;
 		DAOPreferenciaRotond daoRotond = new DAOPreferenciaRotond();
@@ -1427,7 +1429,7 @@ public class RotondAndesTM {
 		}
 		return restaurantes;
 	}
-	
+
 	public Preferencia buscarPreferenciaEspecificaPorIdUsuario(Integer idUsuario, Integer idPreferencia) throws Exception {
 		Preferencia restaurantes;
 		DAOPreferenciaRotond daoRotond = new DAOPreferenciaRotond();
@@ -1805,5 +1807,140 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	///////Transacciones PRODUCTOPEDIDO//////////////
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	
+	public List<PedidoProducto> darPedidoProductos() throws Exception {
+		List<PedidoProducto> pedidosProductos;
+		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			pedidosProductos = daoRotond.darPedidoProducto();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedidosProductos;
+	}
+	
+	public void addPedidoProducto(PedidoProducto pedidoProducto) throws Exception {
+		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			daoRotond.addPedidoProducto(pedidoProducto);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public PedidoProducto buscarPedidoProductoPorName(String name) throws Exception {
+		PedidoProducto pedidoProducto;
+		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			pedidoProducto = daoRotond.buscarPedidoProductoPorName(name);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedidoProducto;
+	}
+	
+	public PedidoProducto buscarPedidoProductoPorID(Long id) throws Exception {
+		PedidoProducto pedidoProducto;
+		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRotond.setConn(conn);
+			pedidoProducto = daoRotond.buscarPedidoProductoPorId(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRotond.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedidoProducto;
 	}
 }
