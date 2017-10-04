@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import dao.DAOZonaRotond;
 import dao.DAOIngredienteRotond;
 import dao.DAOMenuRotond;
 import dao.DAOPedidoProductoRotond;
+import dao.DAOPedidoRotond;
 import dao.DAOPreferenciaRotond;
 import dao.DAOProductoRotond;
 import vos.Ingrediente;
@@ -1851,12 +1853,20 @@ public class RotondAndesTM {
 	
 	public void addPedidoProducto(PedidoProducto pedidoProducto) throws Exception {
 		DAOPedidoProductoRotond daoRotond = new DAOPedidoProductoRotond();
+		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
+		DAOProductoRotond productoDAO = new DAOProductoRotond();
+		
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
 			daoRotond.setConn(conn);
-			daoRotond.addPedidoProducto(pedidoProducto);
+			pedidoDao.setConn(conn);
+			productoDAO.setConn(conn);
+			ArrayList<Producto> producto = productoDAO.buscarProductoPorName(pedidoProducto.getProducto().getNombre());
+			if(pedidoDao.buscarPedidoPorId(pedidoProducto.getPedido().getId())!=null||producto.get(0)!=null) {
+				daoRotond.addPedidoProducto(pedidoProducto);
+			}
 			conn.commit();
 
 		} catch (SQLException e) {

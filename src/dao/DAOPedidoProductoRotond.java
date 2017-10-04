@@ -82,20 +82,12 @@ public class DAOPedidoProductoRotond {
 		DAOPedidoRotond pedidoDao = new DAOPedidoRotond();
 		DAOProductoRotond productoDAO = new DAOProductoRotond();
 		
-		ArrayList<Producto> producto = productoDAO.buscarProductoPorName(pedidoProducto.getProducto().getNombre());
-		if(producto.get(0).getCantidad()>=1||pedidoDao.buscarPedidoPorId(pedidoProducto.getPedido().getId())!=null||producto.get(0)!=null) {
+		
 			String sql2 = "INSERT INTO PEDIDO_PRODUCTO VALUES ("+pedidoProducto.getPedido().getId()+", '"+pedidoProducto.getProducto().getNombre()+"')";
 			PreparedStatement prepStmt = conn.prepareStatement(sql2);
 			recursos.add(prepStmt);
 			prepStmt.executeQuery();
-			if(buscarPedidoProductoPorId(pedidoProducto.getPedido().getId())!=null||buscarPedidoProductoPorName(pedidoProducto.getProducto().getNombre())!=null) {
-				String sqlActualizar = "UPDATE PRODUCTO SET CANTIDAD = "+(producto.get(0).getCantidad()-1)+" WHERE NOMBRE_PRODUCTO = '"+(producto.get(0).getNombre())+"'";
-				//Si el pedido y el producto se agregaron a la tabla entonces disminuye en una la cantidad de productos de dicho producto.
-				PreparedStatement prepStmt2 = conn.prepareStatement(sqlActualizar);
-				recursos.add(prepStmt2);
-				prepStmt.executeQuery();
-			}
-		}
+	
 	}
 	
 	public PedidoProducto buscarPedidoProductoPorId(Long id) throws SQLException, Exception 

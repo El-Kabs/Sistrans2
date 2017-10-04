@@ -77,8 +77,7 @@ public class DAOProductoRotond {
 			double costo = rs.getDouble("COSTO_PRODUCCION");
 			double precio = rs.getDouble("PRECIO");
 			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
-			double cantidad= rs.getDouble("CANTIDAD");
-			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria,cantidad));
+			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria));
 		}
 		return productos;
 	}
@@ -94,8 +93,7 @@ public class DAOProductoRotond {
 	public ArrayList<Producto> buscarProductoPorName(String name) throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 
-		String sql = "SELECT * FROM PRODUCTO WHERE NAME ='" + name + "'";
-
+		String sql = "SELECT * FROM PRODUCTO WHERE NOMBRE ='" + name + "'";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -108,8 +106,7 @@ public class DAOProductoRotond {
 			double costo = rs.getDouble("COSTO_PRODUCCION");
 			double precio = rs.getDouble("PRECIO");
 			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
-			double cantidad= rs.getDouble("CANTIDAD");
-			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria,cantidad));
+			productos.add(new Producto(nombre, info, preparacion, traduccion, costo, precio, categoria));
 		}
 		return productos;
 	}
@@ -124,7 +121,7 @@ public class DAOProductoRotond {
 	 */
 	public void addProducto(Producto producto) throws SQLException, Exception {
 		
-		String sql2 = "INSERT INTO PRODUCTO VALUES ('"+producto.getNombre()+"', '"+producto.getInfo()+"', '"+producto.getTraduccion()+"', '"+producto.getPreparacion()+"', "+producto.getCostoProduccion()+","+producto.getPrecio()+",'"+producto.getCategoria()+"',"+producto.getCantidad()+ ")";
+		String sql2 = "INSERT INTO PRODUCTO VALUES ('"+producto.getNombre()+"', '"+producto.getInfo()+"', '"+producto.getTraduccion()+"', '"+producto.getPreparacion()+"', "+producto.getCostoProduccion()+","+producto.getPrecio()+",'"+producto.getCategoria()+"')";
 //		INSERT INTO USUARIOS VALUES(1, 'Kobs', 'kobs@kobs.com', 'admin', 'kabska83');
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
