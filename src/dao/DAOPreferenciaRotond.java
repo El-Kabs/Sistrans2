@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.Categoria;
 import vos.Ingrediente;
+import vos.Menu;
 import vos.Preferencia;
 
 public class DAOPreferenciaRotond {
@@ -125,9 +127,18 @@ public class DAOPreferenciaRotond {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el video.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void updatePreferencia(Preferencia Preferencia) throws SQLException, Exception {
+	public void updatePreferencia(Preferencia preferencia) throws SQLException, Exception {
 
-		String sql2 = "UPDATE PREFERENCIA SET ZONA='"+Preferencia.getZona()+"', PRECIO_MIN='"+Preferencia.getPrecioMin()+" PRECIO_MAX = ' "+Preferencia.getPrecioMax()+"' CATEGORIA='"+Preferencia.getCategoria()+"' WHERE ID='"+Preferencia.getId()+"'"
+		String sql2 = "UPDATE PREFERENCIA SET ZONA='"+preferencia.getZona()+"', ID_USUARIO="+preferencia.getUsuario()+", PRECIO_MIN='"+preferencia.getPrecioMin()+" PRECIO_MAX = ' "+preferencia.getPrecioMax()+"' CATEGORIA='"+preferencia.getCategoria()+"' WHERE ID_PREFERENCIA="+preferencia.getId()+")"
+		;
+		PreparedStatement prepStmt = conn.prepareStatement(sql2);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	public void updatePreferenciaUsuario(Preferencia preferencia) throws SQLException, Exception {
+
+		String sql2 = "UPDATE PREFERENCIA SET ZONA='"+preferencia.getZona()+"', ID_PREFERENCIA="+preferencia.getId()+"', PRECIO_MIN='"+preferencia.getPrecioMin()+" PRECIO_MAX = ' "+preferencia.getPrecioMax()+"' CATEGORIA='"+preferencia.getCategoria()+"' WHERE ID_USUARIO="+preferencia.getUsuario()+")"
 		;
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		recursos.add(prepStmt);
@@ -150,5 +161,68 @@ public class DAOPreferenciaRotond {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+	
+	public Preferencia buscarPreferenciaDeUnUsuario(Integer idUsuario)throws SQLException, Exception{
+		Preferencia preferencia = null;
+
+		String sql = "SELECT * FROM PREFERENCIA WHERE ID_USUARIO =" + idUsuario;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
+			double precioMin = rs.getDouble("PRECIO_MIN");
+			double precioMax = rs.getDouble("PRECIO_MAX");
+			Integer id1= rs.getInt("ID_preferencia");
+			String zona = rs.getString("ZONA_Preferencia");
+			Integer usuario=rs.getInt("ID_USUARIO");
+			preferencia = new Preferencia(id1, zona, precioMin, precioMax, categoria,usuario);
+		}
+		return preferencia;
+	}
+	
+	public Preferencia buscarPreferenciaEspecificaDeUnUsuario(Integer idUsuario, Integer idPreferencia)throws SQLException, Exception{
+		Preferencia preferencia = null;
+
+		String sql = "SELECT * FROM PREFERENCIA WHERE ID_USUARIO =" + idUsuario +"AND ID_PREFERENCIA="+idPreferencia;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
+			double precioMin = rs.getDouble("PRECIO_MIN");
+			double precioMax = rs.getDouble("PRECIO_MAX");
+			Integer id1= rs.getInt("ID_preferencia");
+			String zona = rs.getString("ZONA_Preferencia");
+			Integer usuario=rs.getInt("ID_USUARIO");
+			preferencia = new Preferencia(id1, zona, precioMin, precioMax, categoria,usuario);
+		}
+		return preferencia;
+	}
+
+	public Preferencia buscarPreferenciaPorId(Integer idPreferencia) throws SQLException, Exception {
+		Preferencia preferencia = null;
+
+		String sql = "SELECT * FROM PREFERENCIA WHERE ID_PREFERENCIA =" + idPreferencia;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
+			double precioMin = rs.getDouble("PRECIO_MIN");
+			double precioMax = rs.getDouble("PRECIO_MAX");
+			Integer id1= rs.getInt("ID_preferencia");
+			String zona = rs.getString("ZONA_Preferencia");
+			Integer usuario=rs.getInt("ID_USUARIO");
+			preferencia = new Preferencia(id1, zona, precioMin, precioMax, categoria,usuario);
+		}
+		return preferencia;
 	}
 }
