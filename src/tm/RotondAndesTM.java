@@ -1497,6 +1497,43 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	
+	/**
+	 * Metodo que modela la transaccion que elimina el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha eliminado el video que entra como parametro
+	 * @param usuario - Video a eliminar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+
+	public void deletePreferencia(Preferencia preferencia) throws Exception {
+		DAOPreferenciaRotond daoVideos = new DAOPreferenciaRotond();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoVideos.setConn(conn);
+			daoVideos.deletePreferencia(preferencia);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoVideos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 
 	/**
 	 * Metodo que modela la transaccion que elimina el video que entra como parametro a la base de datos.
