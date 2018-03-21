@@ -1,0 +1,11 @@
+package vos;
+
+public enum VinculoCliente {
+	 ESTUDIANTES, 
+	 EGRESADOS, 
+	 EMPLEADOS, 
+	 PROFESORES, 
+	 PADRES,
+	 PROFINVITADO,
+	 PERSONASREGISTRADAS;
+}
