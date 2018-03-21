@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOContrato;
+import dao.DAOOferta;
+import vos.VOConsulta;
 import vos.VOContrato;
+import vos.VOOferta;
 
 public class AlohAndesTM {
 	/**
@@ -123,6 +126,38 @@ public class AlohAndesTM {
 		return contratos;
 	}
 	
+	public List<VOConsulta> darDineroContratos() throws Exception {
+		List<VOConsulta> contratos;
+		DAOContrato daoContrato = new DAOContrato();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoContrato.setConn(conn);
+			contratos = daoContrato.dineroPorOperador();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoContrato.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return contratos;
+	}
+		
 	/**
 	 * Metodo que modela la transaccion que busca el video en la base de datos con el id que entra como parametro.
 	 * @param name - Id del video a buscar. name != null
@@ -223,6 +258,217 @@ public class AlohAndesTM {
 		} finally {
 			try {
 				daoContrato.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	
+	public List<VOOferta> darOfertas() throws Exception {
+		List<VOOferta> ofertas;
+		DAOOferta daoOferta = new DAOOferta();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoOferta.setConn(conn);
+			ofertas = daoOferta.darOfertas();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return ofertas;
+	}
+	
+	public List<VOOferta> dar20Ofertas() throws Exception {
+		List<VOOferta> ofertas;
+		DAOOferta daoOferta = new DAOOferta();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoOferta.setConn(conn);
+			ofertas = daoOferta.dar20Ofertas();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return ofertas;
+	}
+	
+	/**
+	 * Metodo que modela la transaccion que busca el video en la base de datos con el id que entra como parametro.
+	 * @param name - Id del video a buscar. name != null
+	 * @return Video - Resultado de la busqueda
+	 * @throws Exception -  cualquier error que se genere durante la transaccion
+	 */
+	public VOOferta buscarOfertaPorId(Long id) throws Exception {
+		VOOferta oferta;
+		DAOOferta daoOferta = new DAOOferta();
+		try 
+		{
+			this.conn = darConexion();
+			daoOferta.setConn(conn);
+			oferta = daoOferta.buscarOfertaPorID(id).get(0);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return oferta;
+	}
+	
+	/**
+	 * Metodo que modela la transaccion que agrega un solo video a la base de datos.
+	 * <b> post: </b> se ha agregado el video que entra como parametro
+	 * @param usuario - el video a agregar. video != null
+	 * @throws Exception - cualquier error que se genere agregando el video
+	 */
+	public void addOferta(VOOferta oferta) throws Exception {
+		DAOOferta daoOferta = new DAOOferta();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoOferta.setConn(conn);
+			daoOferta.addOferta(oferta);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	/**
+	 * Metodo que modela la transaccion que actualiza el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha actualizado el video que entra como parametro
+	 * @param usuario - Video a actualizar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+	public void updateOferta(VOOferta oferta) throws Exception {
+		DAOOferta daoOferta = new DAOOferta();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoOferta.setConn(conn);
+			daoOferta.updateOferta(oferta);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoOferta.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	/**
+	 * Metodo que modela la transaccion que elimina el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha eliminado el video que entra como parametro
+	 * @param usuario - Video a eliminar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+
+	public void deleteOferta(VOOferta oferta) throws Exception {
+		DAOOferta daoOferta = new DAOOferta();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoOferta.setConn(conn);
+			daoOferta.deleteOferta(oferta);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoOferta.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

@@ -9,22 +9,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.map.ObjectMapper;
-
-
 import tm.AlohAndesTM;
-import vos.VOConsulta;
 import vos.VOContrato;
+import vos.VOOferta;
 
-@Path("contratos")
-public class ContratoServices {
-	
+@Path("ofertas")
+public class OfertaServices {
+
 	@Context
 	private ServletContext context;
 
@@ -50,40 +46,40 @@ public class ContratoServices {
 	 */
 	@GET
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getContratos() {
+	public Response getOfertas() {
 		AlohAndesTM tm = new AlohAndesTM(getPath());
-		List<VOContrato> contratos;
+		List<VOOferta> ofertas;
 		try {
-			contratos = tm.darContratos();
+			ofertas = tm.darOfertas();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(contratos).build();
+		return Response.status(200).entity(ofertas).build();
 	}
 	
 	@GET
-	@Path( "/dinero" )
+	@Path( "/masPedidas" )
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getMasContratos() {
+	public Response get20Ofertas() {
 		AlohAndesTM tm = new AlohAndesTM(getPath());
-		List<VOConsulta> contratos;
+		List<VOOferta> ofertas;
 		try {
-			contratos = tm.darDineroContratos();
+			ofertas = tm.dar20Ofertas();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(contratos).build();
+		return Response.status(200).entity(ofertas).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addContrato(VOContrato contrato)
+	public Response addOferta(VOOferta oferta)
 	{
 		try {
 			AlohAndesTM tm = new AlohAndesTM(getPath());
-			tm.addContrato(contrato);
-			return Response.status(200).entity(contrato).build();
+			tm.addOferta(oferta);
+			return Response.status(200).entity(oferta).build();
 		}
 		catch(Exception e)
 		{
@@ -95,19 +91,37 @@ public class ContratoServices {
 	
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateContrato(VOContrato contrato)
+	public Response updateOferta(VOOferta oferta)
 	{
 		try {
 			AlohAndesTM tm = new AlohAndesTM(getPath());
-			tm.updateContrato(contrato);
-			return Response.status(200).entity(contrato).build();
+			tm.updateOferta(oferta);
+			return Response.status(200).entity(oferta).build();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return Response.status(500).entity(contrato).build();
+			return Response.status(500).entity(oferta).build();
 		}
 
 	}
 
+    /**
+     * Metodo que expone servicio REST usando DELETE que elimina el video que recibe en Json
+     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
+     * @param usuario - video a aliminar. 
+     * @return Json con el video que elimino o Json con el error que se produjo
+     */
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteOferta(VOOferta oferta) {
+		AlohAndesTM tm = new AlohAndesTM(getPath());
+		try {
+			tm.deleteOferta(oferta);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(oferta).build();
+	}
 }

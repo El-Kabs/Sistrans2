@@ -1,0 +1,182 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Iteración 1",
+		"_postman_id": "091d9d40-ab98-a0a8-6377-9cf29ee8bb11",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Contratos",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/contratos/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 4687\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Dinero por proveedor",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/contratos/dinero",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST Contrato",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/contratos/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 16,\n        \"fechaInicio\": \"2016-11-16\",\n        \"fechaFin\": \"2017-11-16\",\n        \"costoTot\": 700000,\n        \"estado\": \"VIGENTE\",\n        \"costoTotal\": 700000\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Contratos",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/contratos",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 1,\n        \"fechaInicio\": \"2016-11-16\",\n        \"fechaFin\": \"2017-11-16\",\n        \"costoTot\": 700000,\n        \"estado\": \"FINALIZADO\",\n        \"costoTotal\": 80\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Ofertas",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/ofertas/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 4687\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Más pedidas",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/ofertas/masPedidas",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 4687\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST Oferta",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/ofertas/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 2,\n\t\"costo\": 80000,\n\t\"veces\": 3\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Oferta",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/ofertas/",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"costo\": 90000,\n\t\"veces\": 3\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Oferta",
+			"request": {
+				"url": "http://localhost:8080/AlohAndes/rest/ofertas",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 1795\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

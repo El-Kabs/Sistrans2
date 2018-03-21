@@ -1,5 +1,6 @@
 package vos;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -9,9 +10,9 @@ public class VOContrato {
 	@JsonProperty(value="id")
 	Long id;
 	@JsonProperty(value="fechaInicio")
-	Date fechaInicio;
+	Timestamp fechaInicio;
 	@JsonProperty(value="fechaFin")
-	Date fechaFin;
+	Timestamp fechaFin;
 	@JsonProperty(value="costoTot")
 	Double costoTotal;
 	@JsonProperty(value="estado")
@@ -21,7 +22,7 @@ public class VOContrato {
 	
 	
 	
-	public VOContrato(@JsonProperty(value="id")Long id, @JsonProperty(value="fechaInicio")Date fechaInicio, @JsonProperty(value="fechaFin")Date fechaFin,@JsonProperty(value="costoTot")Double costoTotal, @JsonProperty(value="estado")EstadoContrato estado) {
+	public VOContrato(@JsonProperty(value="id")Long id, @JsonProperty(value="fechaInicio")Timestamp fechaInicio, @JsonProperty(value="fechaFin")Timestamp fechaFin,@JsonProperty(value="costoTot")Double costoTotal, @JsonProperty(value="estado")EstadoContrato estado) {
 		super();
 		this.id= id;
 		this.fechaInicio = fechaInicio;
@@ -50,7 +51,7 @@ public class VOContrato {
 
 
 
-	public Date getFechaInicio() {
+	public Timestamp getFechaInicio() {
 		return fechaInicio;
 	}
 
@@ -58,7 +59,7 @@ public class VOContrato {
 
 
 
-	public void setFechaInicio(Date fechaInicio) {
+	public void setFechaInicio(Timestamp fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 
@@ -66,7 +67,7 @@ public class VOContrato {
 
 
 
-	public Date getFechaFin() {
+	public Timestamp getFechaFin() {
 		return fechaFin;
 	}
 
@@ -74,7 +75,7 @@ public class VOContrato {
 
 
 
-	public void setFechaFin(Date fechaFin) {
+	public void setFechaFin(Timestamp fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 

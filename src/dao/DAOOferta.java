@@ -5,16 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
-import vos.EstadoContrato;
-import vos.VOConsulta;
-import vos.VOContrato;
+import vos.VOOferta;
 
-public class DAOContrato {
+public class DAOOferta {
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -29,7 +24,7 @@ public class DAOContrato {
 	 * Metodo constructor que crea DAOVideo
 	 * <b>post: </b> Crea la instancia del DAO e inicializa el Arraylist de recursos
 	 */
-	public DAOContrato() {
+	public DAOOferta() {
 		recursos = new ArrayList<Object>();
 	}
 
@@ -64,10 +59,10 @@ public class DAOContrato {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<VOContrato> darContratos() throws SQLException, Exception {
-		ArrayList<VOContrato> contratos = new ArrayList<VOContrato>();
+	public ArrayList<VOOferta> darOfertas() throws SQLException, Exception {
+		ArrayList<VOOferta> ofertas = new ArrayList<VOOferta>();
 
-		String sql = "SELECT * FROM CONTRATO";
+		String sql = "SELECT * FROM OFERTA";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -75,13 +70,11 @@ public class DAOContrato {
 
 		while (rs.next()) {
 			Long id = rs.getLong("ID");
-			Timestamp fecha_inicio = rs.getTimestamp("FECHA_INICIO");
-			Timestamp fecha_final = rs.getTimestamp("FECHA_FINAL");
-			Double costo = rs.getDouble("COSTO_TOTAL");
-			EstadoContrato contrato = EstadoContrato.valueOf(rs.getString("ESTADO"));
-			contratos.add(new VOContrato(id, fecha_inicio, fecha_final, costo, contrato));
+			Double costo = rs.getDouble("COSTO");
+			Integer veces=rs.getInt("VECES");
+			ofertas.add(new VOOferta(id, costo,veces));
 		}
-		return contratos;
+		return ofertas;
 	}
 
 
@@ -92,23 +85,21 @@ public class DAOContrato {
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public ArrayList<VOContrato> buscarContratoPorID(Long id) throws SQLException, Exception {
-		ArrayList<VOContrato> contratos = new ArrayList<VOContrato>();
+	public ArrayList<VOOferta> buscarOfertaPorID(Long id) throws SQLException, Exception {
+		ArrayList<VOOferta> ofertas = new ArrayList<VOOferta>();
 
-		String sql = "SELECT * FROM CONTRATO WHERE ID =" + id + "";
+		String sql = "SELECT * FROM OFERTA WHERE ID =" + id + "";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
 			Long id2 = rs.getLong("ID");
-			Timestamp fecha_inicio = rs.getTimestamp("FECHA_INICIO");
-			Timestamp fecha_final = rs.getTimestamp("FECHA_FINAL");
-			Double costo = rs.getDouble("COSTO_TOTAL");
-			EstadoContrato contrato = EstadoContrato.valueOf(rs.getString("ESTADO"));
-			contratos.add(new VOContrato(id2, fecha_inicio, fecha_final, costo, contrato));
+			Double costo = rs.getDouble("COSTO");
+			Integer veces=rs.getInt("VECES");
+			ofertas.add(new VOOferta(id2, costo, veces));
 		}
-		return contratos;
+		return ofertas;
 	}
 
 	/**
@@ -119,14 +110,12 @@ public class DAOContrato {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo agregar el video a la base de datos
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void addContrato(VOContrato contrato) throws SQLException, Exception {
-		String sql = "INSERT INTO CONTRATO(ID, FECHA_INICIO, FECHA_FINAL, COSTO_TOTAL, ESTADO) values(?, ?, ?, ?, ?)";
+	public void addOferta(VOOferta oferta) throws SQLException, Exception {
+		String sql = "INSERT INTO OFERTA (ID, COSTO, VECES) values(?, ?, ?)";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		prepStmt.setLong(1, contrato.getId());
-		prepStmt.setTimestamp(2, contrato.getFechaInicio());
-		prepStmt.setTimestamp(3, contrato.getFechaFin());
-		prepStmt.setDouble(4, contrato.getCostoTotal());
-		prepStmt.setString(5, ""+contrato.getEstado());
+		prepStmt.setLong(1, oferta.getId());
+		prepStmt.setDouble(2, oferta.getcosto());
+		prepStmt.setInt(3, oferta.getVeces());
 		System.out.println("SQL:"+sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
@@ -141,42 +130,59 @@ public class DAOContrato {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el video.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public void updateContrato(VOContrato contrato) throws SQLException, Exception {
+	public void updateOferta(VOOferta oferta) throws SQLException, Exception {
 
-		String sql2 = "UPDATE CONTRATO SET ESTADO = '"+contrato.getEstado()+"' WHERE ID="+contrato.getId();
+		String sql2 = "UPDATE OFERTA SET COSTO = "+oferta.getcosto()+" WHERE ID="+oferta.getId();
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
 	
-	/**
-	 * Metodo que busca el/los videos con el nombre que entra como parametro.
-	 * @param name - Nombre de el/los videos a buscar
-	 * @return ArrayList con los videos encontrados
-	 * @throws SQLException - Cualquier error que la base de datos arroje.
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
-	 */
-	public ArrayList<VOConsulta> dineroPorOperador() throws SQLException, Exception {
-		ArrayList<VOConsulta> contratos = new ArrayList<VOConsulta>();
-		Timestamp fechaHoy = new Timestamp(System.currentTimeMillis());
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -365);
-		long yearago = cal.getTimeInMillis();
-		Timestamp comparar = new Timestamp(yearago);
-		String finalf = new SimpleDateFormat("dd/MM/yy").format(fechaHoy);
-		String inicialf = new SimpleDateFormat("dd/MM/yy").format(comparar);
-		String sql = "SELECT b.ID_OPERADOR AS operador, SUM(a.COSTO_TOTAL) As suma FROM CONTRATO a JOIN OPERADORCONTRATO b ON a.ID = b.ID_CONTRATO WHERE a.FECHA_FINAL BETWEEN '"+inicialf+"' AND '"+finalf+"' GROUP BY ID_OPERADOR";
-		System.out.println(sql);
+	public void deleteOfertaEspacio(VOOferta oferta) throws SQLException, Exception {
+		String sql = "DELETE FROM OFERTAESPACIO";
+		sql += " WHERE ID_OFERTA = " + oferta.getId();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	public void deleteOfertaOperador(VOOferta oferta) throws SQLException, Exception {
+		String sql = "DELETE FROM OPERADOROFERTA";
+		sql += " WHERE ID_OFERTA = " + oferta.getId();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	public void deleteOferta(VOOferta oferta) throws SQLException, Exception {
+
+		deleteOfertaEspacio(oferta);
+		deleteOfertaOperador(oferta);
+		String sql = "DELETE FROM OFERTA";
+		sql += " WHERE ID = " + oferta.getId();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	public ArrayList<VOOferta> dar20Ofertas() throws SQLException, Exception {
+		ArrayList<VOOferta> ofertas = new ArrayList<VOOferta>();
+
+		String sql = "SELECT * FROM OFERTA ORDER BY VECES DESC";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long id2 = rs.getLong("operador");
-			Double dinero = rs.getDouble("suma");
-			contratos.add(new VOConsulta(id2, dinero));
+			Long id2 = rs.getLong("ID");
+			Double costo = rs.getDouble("COSTO");
+			Integer veces=rs.getInt("VECES");
+			ofertas.add(new VOOferta(id2, costo, veces));
 		}
-		return contratos;
+		return ofertas;
 	}
+	
 }
+	

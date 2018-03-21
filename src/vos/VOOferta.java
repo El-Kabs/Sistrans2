@@ -34,11 +34,11 @@ public class VOOferta {
 		this.costo = costo;
 	}
 
-	public Integer getveces() {
+	public Integer getVeces() {
 		return veces;
 	}
 
-	public void setveces(Integer veces) {
+	public void setVeces(Integer veces) {
 		this.veces = veces;
 	}
 
